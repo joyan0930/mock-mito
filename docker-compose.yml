@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    ports:
+      - "8501:8501" # Streamlitのデフォルトポート
+    volumes:
+      - .:/app # コードの変更をコンテナに反映
+      # ローカルのADC認証情報をコンテナ内のADCが参照するパスにマウント
+      # 一般的なパス: ~/.config/gcloud
+      # コンテナ内のユーザーや設定によってパスは異なる場合があります (/root/.config/gcloud, /home/appuser/.config/gcloud など)
+      # ご自身の環境に合わせて調整してください。
+      - ~/.config/gcloud:/root/.config/gcloud:ro
+    env_file:
+      - .env
+    # 環境変数を直接設定することも可能
+    # environment:
+    #   - GOOGLE_CLOUD_PROJECT=${GOOGLE_CLOUD_PROJECT}
+    #   - BIGQUERY_DATASET_ID=${BIGQUERY_DATASET_ID}
+    #   - ...
